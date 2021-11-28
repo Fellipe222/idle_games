@@ -71,6 +71,64 @@ class Jogo:
 
             time.sleep(4)
 
+    def idlecus(self):
+        print('iniciando funcao : idlecus()')
+        root = os.getcwd() + r'\images\idlecus'
+        hr,min,seg = 0,0,0
+        vender_itens = 0
+
+        while True:
+            caldeirao   = pyautogui.locateOnScreen(root + r'\caldeirao.png') 
+            voltar      = pyautogui.locateOnScreen(root + r'\voltar.png')
+            erro        = pyautogui.locateOnScreen(root + r'\erro.png') 
+            erro2       = pyautogui.locateOnScreen(root + r'\erro2.png') 
+            mochila     = pyautogui.locateOnScreen(root + r'\mochila.png')
+            vender      = pyautogui.locateOnScreen(root + r'\vender.png') 
+            fechar      = pyautogui.locateOnScreen(root + r'\fechar.png')  
+            x,y         = pyautogui.position()
+
+            seg += 1
+
+            if seg == 60: 
+                min +=1
+                vender_itens +=1
+                seg = 0
+
+            if min == 60:
+                hr+=1  
+                min = 0  
+
+            os.system('cls')
+            print(f'x: {x} y: {y}\n{hr} h {min} min {seg} seg\nvender_itens: {vender_itens}')
+            time.sleep(1)
+            # Caso o botao voltar aparecer na tela, significa que o boneco morreu
+            if voltar:
+                pyautogui.click(voltar)
+                time.sleep(0.2)
+                pyautogui.moveTo(649,565) #move o mouse para o centro da tela
+                pyautogui.dragTo(649,428,5, button='left') # arrasta o personagem para o campo de batalha
+
+            if erro or erro2:
+                pyautogui.click(x=646, y=565) # ignora a mensagem de erro do app
+
+            if vender_itens == 5: # vende os itens indesejados periodicamente 
+                pyautogui.click(mochila)
+                time.sleep(0.5)
+
+                lixeira = pyautogui.locateOnScreen(root + r'\lixeira.png')
+                pyautogui.click(lixeira)
+                time.sleep(0.5)
+
+                vender = pyautogui.locateOnScreen(root + r'\vender.png')
+                fechar = pyautogui.locateOnScreen(root + r'\fechar.png')
+                pyautogui.click(vender) if vender else pyautogui.click(fechar)
+                time.sleep(0.5)
+
+                fechar = pyautogui.locateOnScreen(root + r'\fechar.png')
+                pyautogui.click(fechar)
+
+                vender_itens = 0
+ 
     def stop_jogo(self):
         self.parar_jogo = True
 
@@ -101,9 +159,9 @@ class Nox:
         kill_nox.terminate()
         print('Nox fechado')
 
+a = Jogo().idlecus()
 
+        
 
-
-
-
+        
 
